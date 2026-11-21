@@ -17,7 +17,7 @@ A dark, Matrix-green Streamlit app for learning quantum computing by doing: asse
 | **Home** | Hero, a 3-step "how it works", a live Bell-state demo, and links to the author. |
 | **Circuit Lab** | Presets, one-click gates (H, X, Y, Z, S, T, CX, CZ, SWAP), undo/clear, an editable circuit text box, 1–3 qubits, 256/1024/4096 shots. Diagram, histogram and a plain-English "What just happened" update live. Downloadable PNG run card. |
 | **Treasure Hunt** | A treasure hides in one of 4 (or 8) boxes. Click boxes to search classically, then let Grover's algorithm find it with 1 oracle call (2 for 8 boxes) and compare. Staggered reveal animation, histogram, and a "why Grover is faster" explainer. |
-| **Hardware Runs** | Saved run cards and IBM dashboard screenshots from real hardware jobs, newest first. Images only — the app never contacts IBM. |
+| **Hardware Runs** | Saved run cards and IBM dashboard screenshots from real hardware jobs, newest first. Images only — the app never contacts IBM. Also shows one clearly-labeled simulator example, so the page is not empty before real runs are added. |
 
 ### Circuit Lab
 
