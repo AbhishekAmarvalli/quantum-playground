@@ -71,12 +71,14 @@ def grover_iterations(n):
 def grover_circuit(secret):
     secret = str(secret).strip()
     n = len(secret)
+    # Qiskit prints qubit 0 as the RIGHTMOST bit, so map the label right-to-left
+    bits = list(reversed(secret))
     qc = QuantumCircuit(n)
     # initial superposition
     qc.h(range(n))
     for _ in range(grover_iterations(n)):
         # oracle: phase flip on |secret>
-        for i, bit in enumerate(secret):
+        for i, bit in enumerate(bits):
             if bit == "0":
                 qc.x(i)
         if n == 1:
@@ -85,7 +87,7 @@ def grover_circuit(secret):
             qc.h(n - 1)
             qc.mcx(list(range(n - 1)), n - 1)
             qc.h(n - 1)
-        for i, bit in enumerate(secret):
+        for i, bit in enumerate(bits):
             if bit == "0":
                 qc.x(i)
         # diffusion

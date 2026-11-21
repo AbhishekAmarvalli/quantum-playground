@@ -31,7 +31,7 @@ CSS = """
 :root{--g:#00ff41;--g-dim:#00b32d;--panel:rgba(0,14,2,.78);--txt:#b6ffc8;}
 html,body{background:#000 !important;}
 .stApp,[data-testid="stAppViewContainer"],[data-testid="stHeader"]{background:transparent !important;}
-.stApp{position:relative;z-index:1;}
+
 .stApp p,.stApp li,.stApp label,.stApp h1,.stApp h2,.stApp h3,.stApp h4,
 .stApp textarea,.stApp input,.stApp button,.stApp code,
 [data-testid="stMarkdownContainer"],[data-testid="stCaptionContainer"]
@@ -98,7 +98,7 @@ function rain(){
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   var c = document.createElement('canvas'); c.id = 'matrix-rain';
   c.style.cssText = 'position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:0;pointer-events:none;opacity:0.18';
-  document.body.appendChild(c);
+  document.body.insertBefore(c, document.body.firstChild);
   var ctx = c.getContext('2d'), fs = 16, drops = [];
   function resize(){
     c.width = window.innerWidth; c.height = window.innerHeight;
