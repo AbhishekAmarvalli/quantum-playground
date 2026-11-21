@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import CircuitDiagram from "./CircuitDiagram";
 import Histogram from "./Histogram";
 import { runCardDataUrl } from "./runCard";
@@ -11,14 +11,37 @@ const ONE_QUBIT = ["h", "x", "y", "z", "s", "t"] as const;
 const TWO_QUBIT = ["cx", "cz", "swap"] as const;
 const SHOTS = [256, 1024, 4096];
 
+type LabParams = { c?: string | null; n?: string | null; s?: string | null; p?: string | null };
+
+function readLabParams(): LabParams {
+  if (typeof window === "undefined") return {};
+  const raw = window.location.hash.replace("#", "");
+  const q = raw.indexOf("?");
+  if (q < 0) return {};
+  const sp = new URLSearchParams(raw.slice(q + 1));
+  return { c: sp.get("c"), n: sp.get("n"), s: sp.get("s"), p: sp.get("p") };
+}
+
 export default function Lab() {
-  const [preset, setPreset] = useState("Bell state (entanglement)");
-  const [nQubits, setNQubits] = useState(2);
-  const [text, setText] = useState("h 0\ncx 0 1");
-  const [shots, setShots] = useState(1024);
+  const initial = readLabParams();
+  const initialPreset = initial.p && PRESETS[initial.p] ? initial.p : "Bell state (entanglement)";
+  const initialN = initial.n ? Math.min(3, Math.max(1, Number(initial.n))) : (initial.p && PRESETS[initial.p] ? PRESETS[initial.p].n : 2);
+  const initialText =
+    initial.c != null
+      ? decodeURIComponent(initial.c)
+      : initial.p && PRESETS[initial.p]
+        ? PRESETS[initial.p].text
+        : "h 0\ncx 0 1";
+  const initialShots = initial.s ? Number(initial.s) : 1024;
+
+  const [preset, setPreset] = useState(initialPreset);
+  const [nQubits, setNQubits] = useState(initialN);
+  const [text, setText] = useState(initialText);
+  const [shots, setShots] = useState(initialShots);
   const [target1, setTarget1] = useState(0);
   const [control, setControl] = useState(0);
   const [target2, setTarget2] = useState(1);
+  const [copied, setCopied] = useState(false);
 
   const qopts = Array.from({ length: nQubits }, (_, i) => i);
   const t1 = Math.min(target1, nQubits - 1);
@@ -58,6 +81,16 @@ export default function Lab() {
     if (typeof document === "undefined") return "";
     return runCardDataUrl(result.circuit, result.counts, shots);
   }, [result, shots]);
+
+  // Keep the URL in sync so a circuit can be shared or reloaded.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams();
+    params.set("c", encodeURIComponent(text));
+    params.set("n", String(nQubits));
+    params.set("s", String(shots));
+    window.history.replaceState(null, "", `#lab?${params.toString()}`);
+  }, [text, nQubits, shots]);
 
   return (
     <>
@@ -163,24 +196,62 @@ export default function Lab() {
           </div>
 
           <div className="grid-2">
-            <button className="btn" onClick={undo}>
+            <button className="btn" onClick={undo} disabled={!text.trim()}>
               UNDO LAST
             </button>
-            <button className="btn" onClick={() => setText("")}>
+            <button className="btn" onClick={() => setText("")} disabled={!text.trim()}>
               CLEAR
+            </button>
+          </div>
+
+          <div className="grid-2">
+            <button
+              className="btn"
+              onClick={async () => {
+                try {
+                  await navigator.clipboard.writeText(text);
+                  setCopied(true);
+                  window.setTimeout(() => setCopied(false), 1400);
+                } catch {
+                  setCopied(false);
+                }
+              }}
+              disabled={!text.trim()}
+            >
+              {copied ? "COPIED ✓" : "COPY CIRCUIT"}
+            </button>
+            <button
+              className="btn"
+              onClick={() => {
+                const chosen = PRESETS[preset];
+                if (chosen) {
+                  setNQubits(chosen.n);
+                  setText(chosen.text);
+                }
+              }}
+            >
+              RESET TO PRESET
             </button>
           </div>
 
           <div>
             <label className="field" htmlFor="circuit">
               Circuit text (editable, one gate per line)
+              <span className="small" style={{ marginLeft: "0.6rem", textTransform: "none" }}>
+                {text.split(/\r?\n/).filter((l) => l.trim()).length} gate(s)
+              </span>
             </label>
             <textarea
               id="circuit"
               value={text}
               spellCheck={false}
+              aria-describedby="circuit-help"
               onChange={(e) => setText(e.target.value)}
             />
+            <p id="circuit-help" className="small" style={{ marginTop: "0.35rem" }}>
+              One gate per line, e.g. <code>h 0</code>, <code>cx 0 1</code>. Qubit 0 is the
+              rightmost bit in results (Qiskit convention). Lines starting with # are ignored.
+            </p>
           </div>
 
           <div>
@@ -201,7 +272,7 @@ export default function Lab() {
           </div>
         </div>
 
-        <div className="stack">
+        <div className="stack" aria-live="polite" aria-atomic="false">
           <p className="small">LIVE RESULT</p>
 
           {result.kind === "empty" && (

@@ -1,0 +1,11 @@
+{
+  "image": "superposition_demo.png",
+  "kind": "demo",
+  "source": "simulator",
+  "backend": "qiskit_aer (local simulator)",
+  "job_id": "none (no job submitted)",
+  "timestamp": "2026-11-21",
+  "circuit": "h 0",
+  "shots": 1024,
+  "caption": "Single-qubit superposition. One Hadamard on one qubit creates an equal superposition of |0> and |1>: both outcomes land near 50%. The simplest non-classical state. Worked example generated on this machine with Qiskit Aer; no IBM hardware was involved."
+}

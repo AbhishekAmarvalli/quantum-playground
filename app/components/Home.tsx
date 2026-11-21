@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Histogram from "./Histogram";
 import { buildFromText, runSim } from "@/lib/quantum";
-import { GITHUB_URL, LINKEDIN_URL, NAME, REPO_URL, type Page } from "@/lib/site";
+import { GITHUB_URL, LINKEDIN_URL, NAME, PRESETS, REPO_URL, type Page } from "@/lib/site";
 
 const STEPS = [
   ["01", "BUILD", "Pick a preset or click gates to assemble a quantum circuit."],
@@ -23,12 +23,32 @@ export default function Home({ go }: { go: (page: Page) => void }) {
       </p>
 
       <div className="cta-row">
-        <button className="btn" onClick={() => go("lab")}>
+        <button className="btn primary" onClick={() => go("lab")}>
           ▶ ENTER THE LAB
         </button>
         <button className="btn" onClick={() => go("game")}>
           ▶ PLAY TREASURE HUNT
         </button>
+        <button className="btn" onClick={() => go("runs")}>
+          ▶ HARDWARE RUNS
+        </button>
+      </div>
+
+      <h3>&gt; TRY A CIRCUIT IN ONE CLICK</h3>
+      <div className="cta-row">
+        {Object.keys(PRESETS).map((name) => (
+          <button
+            key={name}
+            className="btn"
+            onClick={() => {
+              const params = new URLSearchParams({ p: name });
+              window.location.hash = `lab?${params.toString()}`;
+              go("lab");
+            }}
+          >
+            {name}
+          </button>
+        ))}
       </div>
 
       <h3>&gt; HOW IT WORKS</h3>

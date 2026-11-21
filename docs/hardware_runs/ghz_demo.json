@@ -1,0 +1,11 @@
+{
+  "image": "ghz_demo.png",
+  "kind": "demo",
+  "source": "simulator",
+  "backend": "qiskit_aer (local simulator)",
+  "job_id": "none (no job submitted)",
+  "timestamp": "2026-11-21",
+  "circuit": "h 0; cx 0 1; cx 1 2",
+  "shots": 1024,
+  "caption": "GHZ state (3 qubits). Three-qubit GHZ state: h on qubit 0 then two CNOTs. Only 000 and 111 appear, about half each \u2014 the signature of genuine multi-qubit entanglement. Worked example generated on this machine with Qiskit Aer; no IBM hardware was involved."
+}

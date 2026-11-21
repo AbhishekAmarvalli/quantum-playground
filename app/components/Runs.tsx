@@ -17,6 +17,7 @@ const byNewest = (a: RunMeta, b: RunMeta) =>
 
 export default function Runs() {
   const [runs, setRuns] = useState<RunMeta[] | null>(null);
+  const [filter, setFilter] = useState<"all" | "hardware" | "simulator">("all");
 
   useEffect(() => {
     let alive = true;
@@ -38,6 +39,9 @@ export default function Runs() {
     .filter((m) => m.source === "simulator" && m.kind === "demo")
     .sort(byNewest);
 
+  const visibleHardware = filter === "simulator" ? [] : hardware;
+  const visibleDemos = filter === "hardware" ? [] : demos;
+
   return (
     <>
       <h2>&gt; HARDWARE RUNS</h2>
@@ -48,14 +52,36 @@ export default function Runs() {
 
       {runs === null && <div className="note">Loading saved runs…</div>}
 
-      {runs !== null && hardware.length === 0 && (
+      {runs !== null && (
+        <div className="cta-row" role="tablist" aria-label="Filter runs" style={{ marginTop: "0.6rem" }}>
+          {(
+            [
+              ["all", `All (${runs.length})`],
+              ["hardware", `Hardware (${hardware.length})`],
+              ["simulator", `Simulator (${demos.length})`],
+            ] as const
+          ).map(([key, label]) => (
+            <button
+              key={key}
+              role="tab"
+              aria-selected={filter === key}
+              className={filter === key ? "btn primary" : "btn"}
+              onClick={() => setFilter(key)}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+      )}
+
+      {runs !== null && hardware.length === 0 && filter !== "simulator" && (
         <div className="note">
           No hardware runs saved yet. Run notebooks/03_real_hardware.ipynb, then commit
           docs/hardware_runs/.
         </div>
       )}
 
-      {hardware.map((m) => (
+      {visibleHardware.map((m) => (
         <div key={m.image} style={{ marginBottom: "1.4rem" }}>
           <div className="card">
             <h4>{m.kind === "dashboard" ? "DASHBOARD SCREENSHOT" : "RUN CARD"}</h4>
@@ -68,7 +94,7 @@ export default function Runs() {
         </div>
       ))}
 
-      {demos.map((m) => (
+      {visibleDemos.map((m) => (
         <div key={m.image} style={{ marginTop: "1.8rem" }}>
           <h3>&gt; SIMULATOR EXAMPLE — NOT IBM HARDWARE</h3>
           <div className="card card-demo">
@@ -84,6 +110,26 @@ export default function Runs() {
           </p>
         </div>
       ))}
+
+      <details className="expander" style={{ marginTop: "1.6rem" }}>
+        <summary>HOW TO ADD A REAL IBM RUN</summary>
+        <p>
+          1. Run <code>notebooks/03_real_hardware.ipynb</code> on a real backend.
+        </p>
+        <p>
+          2. Save the histogram PNG and a JSON sidecar into <code>docs/hardware_runs/</code> with
+          fields: <code>image</code>, <code>source: "hardware"</code>, <code>kind</code>,
+          <code>backend</code>, <code>job_id</code>, <code>timestamp</code>, <code>caption</code>.
+        </p>
+        <p>
+          3. Commit and push. The build copies the image into <code>public/hardware_runs/</code>
+          and regenerates the manifest automatically.
+        </p>
+        <p className="small">
+          Simulator examples are labeled <code>source: "simulator"</code> and are never mistaken
+          for hardware results.
+        </p>
+      </details>
     </>
   );
 }

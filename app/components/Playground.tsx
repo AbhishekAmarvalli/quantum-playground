@@ -20,11 +20,13 @@ const PAGES: Page[] = ["home", "lab", "game", "runs"];
 export default function Playground() {
   const [page, setPage] = useState<Page>("home");
 
-  // Deep links (#lab, #game, #runs) so a section can be shared or reloaded.
+  // Deep links (#lab, #game, #runs, and #lab?c=...&n=2&s=1024 for a shared circuit)
+  // so a section or an exact circuit can be shared or reloaded.
   useEffect(() => {
     const read = () => {
-      const hash = window.location.hash.replace("#", "");
-      if (PAGES.includes(hash as Page)) setPage(hash as Page);
+      const raw = window.location.hash.replace("#", "");
+      const name = raw.split(/[?&]/)[0];
+      if (PAGES.includes(name as Page)) setPage(name as Page);
     };
     read();
     window.addEventListener("hashchange", read);
@@ -38,8 +40,11 @@ export default function Playground() {
 
   return (
     <>
+      <a className="skip" href="#main">
+        Skip to content
+      </a>
       <MatrixRain />
-      <main className="wrap">
+      <main id="main" className="wrap" tabIndex={-1}>
         <nav className="nav" aria-label="Sections">
           {NAV.map(([key, label]) => (
             <button
