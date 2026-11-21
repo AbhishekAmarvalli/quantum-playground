@@ -4,7 +4,11 @@
 
 [![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://quantum-playground.streamlit.app)
 
-**Live app: <https://quantum-playground.streamlit.app>**
+**Live app (Streamlit): <https://quantum-playground.streamlit.app>**
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FAbhishekAmarvalli%2Fquantum-playground)
+
+The app is now also a static Next.js build that runs on Vercel, Netlify or any static host with no Python backend. Click the button above to deploy your own copy in one click (free); once deployed, send me the URL and I will add it here.
 
 A dark, Matrix-green Streamlit app for learning quantum computing by doing: assemble circuits with gate buttons or plain text, watch the simulator run them live, and play a treasure hunt against Grover's search algorithm.
 
@@ -35,9 +39,30 @@ A dark, Matrix-green Streamlit app for learning quantum computing by doing: asse
 
 ![Run card](docs/screenshots/run_card_example.png)
 
+## Deploy to Vercel (or Netlify)
+
+The Next.js version needs no server and no environment variables:
+
+```bash
+npm install
+npm run build   # also copies docs/hardware_runs into public/
+npm run start
+```
+
+Then either click **Deploy with Vercel** above, or run `npx vercel --prod` from the repo root. Hardware run images are picked up at build time from `docs/hardware_runs/`, so committing a new PNG + JSON there is enough to publish it.
+
 ## Run it locally
 
 No install needed: try the live app at <https://quantum-playground.streamlit.app>.
+
+For the Next.js version:
+
+```bash
+npm install
+npm run dev
+```
+
+Open <http://localhost:3000>.
 
 Or run it on your machine:
 

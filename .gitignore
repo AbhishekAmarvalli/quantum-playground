@@ -1,4 +1,9 @@
 __pycache__/
+node_modules/
+.next/
+out/
+*.tsbuildinfo
+public/hardware_runs/
 *.pyc
 .env
 *.egg-info/
