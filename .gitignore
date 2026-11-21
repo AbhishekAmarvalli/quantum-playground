@@ -4,7 +4,11 @@ node_modules/
 out/
 *.tsbuildinfo
 public/hardware_runs/
+.vercel/
 *.pyc
 .env
 *.egg-info/
 .DS_Store
+
+.vercel
+.env*

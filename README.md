@@ -4,11 +4,13 @@
 
 [![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://quantum-playground.streamlit.app)
 
-**Live app (Streamlit): <https://quantum-playground.streamlit.app>**
+**Live app (Vercel): <https://quantumplayground.vercel.app>**
+
+[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://quantum-playground.streamlit.app) **Streamlit mirror: <https://quantum-playground.streamlit.app>**
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FAbhishekAmarvalli%2Fquantum-playground)
 
-The app is now also a static Next.js build that runs on Vercel, Netlify or any static host with no Python backend. Click the button above to deploy your own copy in one click (free); once deployed, send me the URL and I will add it here.
+The app is also a static Next.js build that runs on Vercel, Netlify or any static host with no Python backend. Click the button above to deploy your own copy in one click (free). Every push to `main` now auto-deploys to the live URL above.
 
 A dark, Matrix-green Streamlit app for learning quantum computing by doing: assemble circuits with gate buttons or plain text, watch the simulator run them live, and play a treasure hunt against Grover's search algorithm.
 
