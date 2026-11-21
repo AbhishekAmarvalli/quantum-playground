@@ -2,6 +2,10 @@
 
 > Build quantum circuits. Hunt treasure with Grover's algorithm. Free, in your browser.
 
+[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://quantum-playground.streamlit.app)
+
+**Live app: <https://quantum-playground.streamlit.app>**
+
 A dark, Matrix-green Streamlit app for learning quantum computing by doing: assemble circuits with gate buttons or plain text, watch the simulator run them live, and play a treasure hunt against Grover's search algorithm.
 
 ![Landing page](docs/screenshots/landing.png)
@@ -32,6 +36,10 @@ A dark, Matrix-green Streamlit app for learning quantum computing by doing: asse
 ![Run card](docs/screenshots/run_card_example.png)
 
 ## Run it locally
+
+No install needed: try the live app at <https://quantum-playground.streamlit.app>.
+
+Or run it on your machine:
 
 ```bash
 pip install -r requirements.txt
@@ -65,4 +73,4 @@ Every circuit is simulated locally with Qiskit Aer. Nothing is sent anywhere exc
 
 **Abhishek Amarvalli** — B.Tech computer science student exploring quantum software with Qiskit.
 
-[GitHub](https://github.com/AbhishekAmarvalli) · [LinkedIn](https://www.linkedin.com/in/YOUR-HANDLE)
+[GitHub](https://github.com/AbhishekAmarvalli) · [LinkedIn](https://www.linkedin.com/in/abhishekamarvalli) · [Live app](https://quantum-playground.streamlit.app)

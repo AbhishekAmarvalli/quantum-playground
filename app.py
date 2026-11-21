@@ -17,7 +17,7 @@ from qplay import (build_from_text, run_sim, grover_circuit, grover_iterations,
 # ---------- edit these ----------
 NAME = "Abhishek Amarvalli"
 GITHUB_URL = "https://github.com/AbhishekAmarvalli"
-LINKEDIN_URL = "https://www.linkedin.com/in/YOUR-HANDLE"
+LINKEDIN_URL = "https://www.linkedin.com/in/abhishekamarvalli"
 REPO_URL = GITHUB_URL + "/quantum-playground"
 # --------------------------------
 
